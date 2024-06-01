@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import embedUrl from "../../helpers/embedUrl";
 import { Quiz } from "../../types";
 
-export const QuizCard = ({ quiz }: { quiz: Quiz }) => {
+export const QuizCard = ({ quiz, index }: { quiz: Quiz; index: number }) => {
   const { id, title, description, score, url } = quiz;
   const adjustedUrl = embedUrl(url);
   return (
@@ -11,7 +11,9 @@ export const QuizCard = ({ quiz }: { quiz: Quiz }) => {
       <p>{description}</p>
       <p>Score: {score}</p>
       <iframe title={String(id)} src={adjustedUrl}></iframe>
-      <Link to={`/edit-quiz/${id}`}>Edit Quiz</Link>
+      <Link to={`/edit-quiz/${id}`} state={{ index }}>
+        Edit Quiz
+      </Link>
     </div>
   );
 };
