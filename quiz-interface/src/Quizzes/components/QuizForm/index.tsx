@@ -1,18 +1,42 @@
-// import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import InputTextField from "../InputTextField";
 import { useState } from "react";
 import { Question } from "../../types";
 import QuestionView from "../QuestionView";
+import { getQuiz } from "../../services/getQuiz";
 
 export const QuizForm = () => {
-  // let location = useLocation();
-  // // const isEdit = location.pathname.includes("edit");
-  // // let { quizId } = useParams();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [score, setScore] = useState<number>();
-  const [link, setLink] = useState("");
-  const [questions, setQuestions] = useState<Question[]>([]);
+  let location = useLocation();
+  const isEdit = location.pathname.includes("edit");
+  let { quizId } = useParams();
+  const currentQuiz = getQuiz({ quizId });
+
+  const [title, setTitle] = useState(
+    isEdit && currentQuiz[0] === "success" ? currentQuiz[1].title : ""
+  );
+  const [description, setDescription] = useState(
+    isEdit && currentQuiz[0] === "success" ? currentQuiz[1].description : ""
+  );
+  const [score, setScore] = useState<number | undefined | null>(
+    isEdit && currentQuiz[0] === "success" ? currentQuiz[1].score : undefined
+  );
+  const [link, setLink] = useState(
+    isEdit && currentQuiz[0] === "success" ? currentQuiz[1].url : ""
+  );
+  const [questions, setQuestions] = useState<Question[]>(
+    isEdit && currentQuiz[0] === "success"
+      ? currentQuiz[1].questions_answers
+      : []
+  );
+
+  if (isEdit && currentQuiz[0] === "error") {
+    return (
+      <div>
+        <h3>{currentQuiz[1].errorMessage}</h3>
+        <Link to={"/"}>Return to homepage</Link>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -30,7 +54,7 @@ export const QuizForm = () => {
       />
       <InputTextField
         name={"Quiz Score"}
-        state={score}
+        state={score || undefined}
         onChange={(value) => setScore(Number(value))}
       />
       <InputTextField
