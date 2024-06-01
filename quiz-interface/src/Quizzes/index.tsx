@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { QuizCard } from "./components/QuizCard";
-import data from "./data.json";
+import { Quiz } from "./types";
 
 const Quizzes = () => {
+  const { quizzes } = useOutletContext<{ quizzes: Quiz[] }>();
+
   return (
     <div>
       <div>
@@ -11,8 +13,8 @@ const Quizzes = () => {
         </Link>
       </div>
       <div>
-        {data.map((quiz, index) => (
-          <QuizCard quiz={quiz} key={index} />
+        {quizzes.map((quiz, index) => (
+          <QuizCard quiz={quiz} key={index} index={index} />
         ))}
       </div>
     </div>
