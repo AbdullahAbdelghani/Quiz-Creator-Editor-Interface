@@ -11,6 +11,7 @@ import QuestionView from "../QuestionView";
 import { getQuiz } from "../../services/getQuiz";
 import { styles as appStyles } from "../../styles";
 import { styles } from "./styles";
+import { v4 } from "uuid";
 
 export const QuizForm = () => {
   let location = useLocation();
@@ -204,7 +205,7 @@ export const QuizForm = () => {
                     currentQuiz[0] === "success" ? currentQuiz[1].created : "",
                   id: currentQuiz[0] === "success" ? currentQuiz[1].id : "",
                 }
-              : { created: Date.now().toString(), id: "" };
+              : { created: Date.now().toString(), id: v4() };
             onSubmit(
               {
                 title,
