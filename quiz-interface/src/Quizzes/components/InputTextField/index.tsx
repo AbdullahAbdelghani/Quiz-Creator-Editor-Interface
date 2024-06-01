@@ -1,8 +1,10 @@
+import { styles } from "./styles";
+
 function InputTextField({
   name,
   state = "",
   onChange,
-  height,
+  height = 40,
 }: {
   name: string;
   state?: string | number;
@@ -11,13 +13,13 @@ function InputTextField({
 }) {
   return (
     <div>
-      <label>{name}</label>
+      <label style={styles.label}>{name}</label>
       <br />
       <input
         type="text"
         value={state}
         onChange={(event) => onChange(event.target.value)}
-        style={{ height }}
+        style={{ ...styles.inputField, height }}
       />
     </div>
   );

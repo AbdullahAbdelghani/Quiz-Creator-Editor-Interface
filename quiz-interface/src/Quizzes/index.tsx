@@ -1,6 +1,7 @@
 import { Link, useOutletContext } from "react-router-dom";
 import { QuizCard } from "./components/QuizCard";
 import { Quiz } from "./types";
+import { styles } from "./styles";
 
 const Quizzes = () => {
   const { quizzes } = useOutletContext<{ quizzes: Quiz[] }>();
@@ -9,7 +10,7 @@ const Quizzes = () => {
     <div>
       <div>
         <Link to={"/create-quiz"}>
-          <button>Create Quiz</button>
+          <button style={styles.button}>Create Quiz</button>
         </Link>
       </div>
       <div>

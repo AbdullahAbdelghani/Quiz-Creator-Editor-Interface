@@ -9,6 +9,8 @@ import { useState } from "react";
 import { Question, Quiz } from "../../types";
 import QuestionView from "../QuestionView";
 import { getQuiz } from "../../services/getQuiz";
+import { styles as appStyles } from "../../styles";
+import { styles } from "./styles";
 
 export const QuizForm = () => {
   let location = useLocation();
@@ -49,8 +51,8 @@ export const QuizForm = () => {
   }
 
   return (
-    <div>
-      <h3>Quiz Form</h3>
+    <div style={styles.container}>
+      <h3 style={styles.header}>Quiz Form</h3>
       <InputTextField
         name={"Title"}
         state={title}
@@ -59,7 +61,7 @@ export const QuizForm = () => {
           setError((prev) => ({ ...prev, title: undefined }));
         }}
       />
-      {error.title && <p>{error.title}</p>}
+      {error.title && <p style={styles.errorMessage}>{error.title}</p>}
       <InputTextField
         name={"Description"}
         state={description}
@@ -69,7 +71,9 @@ export const QuizForm = () => {
         }}
         height={150}
       />
-      {error.description && <p>{error.description}</p>}
+      {error.description && (
+        <p style={styles.errorMessage}>{error.description}</p>
+      )}
       <InputTextField
         name={"Quiz Score"}
         state={score || undefined}
@@ -83,9 +87,10 @@ export const QuizForm = () => {
           setError((prev) => ({ ...prev, link: undefined }));
         }}
       />
-      {error.link && <p>{error.link}</p>}
+      {error.link && <p style={styles.errorMessage}>{error.link}</p>}
       <hr />
       <button
+        style={styles.button}
         onClick={() =>
           setQuestions((prev) => [
             ...prev,
@@ -136,30 +141,44 @@ export const QuizForm = () => {
               }
               questionIndex={index}
             />
-            {error.answerBody && <p>{error.answerBody}</p>}
-            {error.questionAnswer && <p>{error.questionAnswer}</p>}
+            {error.answerBody && (
+              <p style={styles.errorMessage}>{error.answerBody}</p>
+            )}
+            {error.questionAnswer && (
+              <p style={styles.errorMessage}>{error.questionAnswer}</p>
+            )}
             <br />
+            <hr />
           </>
         ))}
       </div>
       <div>
         <button
+          style={appStyles.button}
           onClick={() => {
-            if (title === "")
+            let isError = 0;
+            if (title === "") {
               setError((prev) => ({ ...prev, title: "title is required" }));
-            if (description === "")
+              isError = 1;
+            }
+            if (description === "") {
               setError((prev) => ({
                 ...prev,
                 description: "description is required",
               }));
-            if (link === "")
+              isError = 1;
+            }
+            if (link === "") {
               setError((prev) => ({ ...prev, link: "link is required" }));
+              isError = 1;
+            }
             questions.forEach((question) => {
               if (!question.answers.every((answer) => answer.text)) {
                 setError((prev) => ({
                   ...prev,
                   answerBody: "all answers must have a text",
                 }));
+                isError = 1;
               }
               if (
                 !(
@@ -167,6 +186,7 @@ export const QuizForm = () => {
                   1
                 )
               ) {
+                isError = 1;
                 setError((prev) => ({
                   ...prev,
                   questionAnswer: "all questions must have a correct answer",
@@ -176,6 +196,7 @@ export const QuizForm = () => {
             for (const err in error) {
               if (typeof error[err] === "string") return;
             }
+            if (isError) return;
             const dateUpdate = isEdit
               ? {
                   modified: Date.now().toString(),

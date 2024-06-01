@@ -1,6 +1,7 @@
 import { Question } from "../../types";
 import InputTextField from "../InputTextField";
 import Choice from "../QuizForm/Choice";
+import { styles } from "./styles";
 
 const QuestionView = ({
   question,
@@ -22,7 +23,9 @@ const QuestionView = ({
           onChange({ ...question, text: questionBody })
         }
       />
-      <button onClick={addNewAnswer}>Add Answer</button>
+      <button style={styles.button} onClick={addNewAnswer}>
+        Add Answer
+      </button>
       {question.answers.map((answer, index) => (
         <Choice
           key={`${questionIndex}${index}`}
