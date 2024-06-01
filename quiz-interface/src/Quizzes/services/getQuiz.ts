@@ -1,7 +1,11 @@
 import data from "../data.json";
+import { Quiz } from "../types";
 
 export const getQuiz = ({ quizId }: { quizId?: string }) => {
-  const requestedQuiz = data.find((quiz) => String(quiz.id) === quizId);
+  const quizzes = data as Quiz[];
+  const requestedQuiz = quizId
+    ? quizzes.find((quiz) => quiz.id === quizId)
+    : undefined;
   if (!quizId || !requestedQuiz)
     return [
       "error",

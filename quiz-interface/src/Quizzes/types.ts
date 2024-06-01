@@ -1,8 +1,8 @@
 export type Quiz = {
   created: string;
   description: string;
-  id: number;
-  modified: string;
+  id?: string;
+  modified?: string;
   questions_answers: Question[];
   score: null | number;
   title: string;
@@ -10,14 +10,14 @@ export type Quiz = {
 };
 
 export type Question = {
-  answer_id: null | number;
+  answer_id: null | string;
   answers: {
-    id?: number;
+    id?: string;
     is_true: boolean;
     text: string;
   }[];
   feedback_false: string;
   feedback_true: string;
-  id?: number;
+  id?: string;
   text: string;
 };
